@@ -1,4 +1,5 @@
 b64enc_main
+b64dec_main
 b64_test
 
 # Prerequisites
