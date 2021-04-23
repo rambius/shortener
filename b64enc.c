@@ -9,6 +9,7 @@ char* b64enc(char* in, int ilen) {
   // We malloc here, the caller should free, how to let them now about that?
   char *r = (char *)malloc(b64_max_len);
   // If malloc fails, what to do?
+  // How to simulate malloc errors?
   char *er = sodium_bin2base64(r, b64_max_len, in, ilen, sodium_base64_VARIANT_ORIGINAL);
   return er;
 }
