@@ -1,23 +1,17 @@
 #include "shortener.h"
-#include <sodium.h>
 #include <stdio.h>
-#include <string.h>
+#include <stdlib.h>
 
 int main(int argc, char** argv) {
-  if (sodium_init() < 0) {
-    fprintf(stderr, "Cannot init libsodium\n");
-    return 1;
-  }
-
   for (int i = 1; i < argc; i++) {
     char *er = b64enc_str(argv[i]);
     if (er == NULL) {
-      fprintf(stderr, "Cannot base64 encode %s", argv[i]);
-      return 1;
+      fprintf(stderr, "Cannot base64 encode %s\n", argv[i]);
+      // if there is an error and er has been malloced already, how can I free it
+    } else {
+      printf("%s\n", er); 
+      free(er);
     }
-    printf("%s\n", er); 
-
-    free(er);
   }
   return 0;
 }
