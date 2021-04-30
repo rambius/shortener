@@ -7,7 +7,7 @@
 
 // This function mallocs too, if we forget to free in the caller
 // how can we check that - static analyzers?
-char* b64dec(char *in, int ilen) {
+char* b64dec(char *in, int ilen, int *err) {
   size_t b64_dec_len = 
     BASE64_DECODED_LEN(ilen);
   char *r = (char *)malloc(b64_dec_len);
@@ -16,10 +16,11 @@ char* b64dec(char *in, int ilen) {
     return NULL;
   };
   // What about the null-terminating byte? 
+  *err = 0;
   return r;
 }
 
-char* b64dec_str(char *in) {
-  return b64dec(in, strlen(in));
+char* b64dec_str(char *in, int *err) {
+  return b64dec(in, strlen(in), err);
 }
 

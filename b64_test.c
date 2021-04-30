@@ -1,16 +1,21 @@
 #include "shortener.h"
 #include <CUnit/Basic.h>
+#include <CUnit/CUnit.h>
 #include <stdlib.h>
 #include <string.h>
 
 void assert_b64enc(char *s, char *expected) {
-  char *r = b64enc_str(s);
+  int err;
+  char *r = b64enc_str(s, &err);
+  CU_ASSERT_EQUAL(0, err);
   CU_ASSERT_STRING_EQUAL(expected, r);
   free(r);
 }
 
 void assert_b64dec(char *s, char *expected) {
-  char *r = b64dec_str(s);
+  int err;
+  char *r = b64dec_str(s, &err);
+  CU_ASSERT_EQUAL(0, err);
   CU_ASSERT_STRING_EQUAL(expected, r);
   free(r);
 }
@@ -32,7 +37,8 @@ void test_b64enc_hw(void) {
 }
 
 void test_b64dec_empty(void) {
-  char *r = b64dec_str("");
+  int err;
+  char *r = b64dec_str("", &err);
   CU_ASSERT_STRING_EQUAL("", r);
   free(r);
 }
@@ -47,8 +53,15 @@ void test_b64dec_newyork(void) {
 
 void test_b64_identity(void) {
   char *r = "hello world";
-  char *enc = b64enc_str(r);
-  char *dec = b64dec_str(enc);
+  int err;
+  char *enc = b64enc_str(r, &err);
+  if (err != 0) {
+    CU_FAIL("Failed to encode");
+  }
+  char *dec = b64dec_str(enc, &err);
+  if (err !=0) {
+    CU_FAIL("Failed to decode");
+  }
   CU_ASSERT_STRING_EQUAL(r, dec);
   free(enc);
   free(dec);

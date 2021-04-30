@@ -4,13 +4,14 @@
 
 int main(int argc, char** argv) {
   for (int i = 1; i < argc; i++) {
-    char *er = b64dec_str(argv[i]);
-    if (er == NULL) {
-      fprintf(stderr, "Cannot base64 decode %s\n", argv[i]);
+    int err;
+    char *r = b64dec_str(argv[i], &err);
+    if (err == 0) {
+      printf("%s\n", r);
+      free(r);
     } else {
-      printf("%s\n", er);
-      free(er);
-    }
+      fprintf(stderr, "Cannot base64 decode %s\n", argv[i]);
+    } 
   }
   return 0;
 }
