@@ -11,12 +11,17 @@ char* b64dec(char *in, int ilen, int *err) {
   size_t b64_dec_len = 
     BASE64_DECODED_LEN(ilen);
   char *r = (char *)malloc(b64_dec_len);
+  if (r == NULL) {
+    *err = BASE64_DEC_MALLOC_ERROR;
+    return NULL;
+  }
   if (sodium_base642bin(r, b64_dec_len, in, ilen, NULL, &b64_dec_len, NULL,
                         sodium_base64_VARIANT_ORIGINAL) < 0) {
+    *err = BASE64_DEC_ERROR;
     return NULL;
   };
   // What about the null-terminating byte? 
-  *err = 0;
+  *err = BASE64_DEC_SUCCESS;
   return r;
 }
 

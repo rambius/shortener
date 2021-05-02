@@ -7,7 +7,7 @@
 void assert_b64enc(char *s, char *expected) {
   int err;
   char *r = b64enc_str(s, &err);
-  CU_ASSERT_EQUAL(0, err);
+  CU_ASSERT_EQUAL(BASE64_ENC_SUCCESS, err);
   CU_ASSERT_STRING_EQUAL(expected, r);
   free(r);
 }
@@ -15,7 +15,7 @@ void assert_b64enc(char *s, char *expected) {
 void assert_b64dec(char *s, char *expected) {
   int err;
   char *r = b64dec_str(s, &err);
-  CU_ASSERT_EQUAL(0, err);
+  CU_ASSERT_EQUAL(BASE64_DEC_SUCCESS, err);
   CU_ASSERT_STRING_EQUAL(expected, r);
   free(r);
 }
